@@ -8,7 +8,8 @@
                 path: 'LibraryODataV2Model>/Books', 
                 sorter: { path: 'ID' },
                 parameters: {
-                    expand: 'Author,Category'
+                    expand: 'Author,Category',
+                    select: 'ID,Title,Description,PublishDate,PageCount,Rating,Price,Available,Author/Name,Category/Name'
                 }
             }">
             <headerToolbar>
@@ -20,7 +21,8 @@
                             showClearIcon="true"
                             items="{
                                 path: 'LibraryODataV2Model>/Authors',
-                                sorter: { path: 'Name' }
+                                sorter: { path: 'Name' },
+                                parameters: {select: 'ID,Name'}
                             }"
                             selectionChange="onAuthorFilterChange">
                             <core:Item key="{LibraryODataV2Model>ID}"
