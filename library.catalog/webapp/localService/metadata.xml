@@ -64,10 +64,27 @@
             <Association Name="Book_Author_Author_Books">
                 <End Type="LibraryDemo.Author" Role="Author_Books" Multiplicity="0..1" />
                 <End Type="LibraryDemo.Book" Role="Book_Author" Multiplicity="*" />
+                <ReferentialConstraint>
+                    <Principal Role="Author_Books">
+                        <PropertyRef Name="ID" />
+                    </Principal>
+                    <Dependent Role="Book_Author">
+                        <PropertyRef Name="AuthorID" />
+                    </Dependent>
+                </ReferentialConstraint>
             </Association>
+
             <Association Name="Book_Category_Category_Books">
                 <End Type="LibraryDemo.Category" Role="Category_Books" Multiplicity="0..1" />
                 <End Type="LibraryDemo.Book" Role="Book_Category" Multiplicity="*" />
+                <ReferentialConstraint>
+                    <Principal Role="Category_Books">
+                        <PropertyRef Name="ID" />
+                    </Principal>
+                    <Dependent Role="Book_Category">
+                        <PropertyRef Name="CategoryID" />
+                    </Dependent>
+                </ReferentialConstraint>
             </Association>
 
             <!-- ================= Entity Container ================= -->
