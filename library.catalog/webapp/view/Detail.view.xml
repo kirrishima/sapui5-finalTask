@@ -1,0 +1,56 @@
+<mvc:View xmlns:layout="sap.ui.layout"
+    controllerName="library.catalog.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    core:require="{
+			formatMessage: 'sap/base/strings/formatMessage'
+		}"
+>
+    <Page showHeader="false">
+        <content>
+            <ObjectHeader
+                title="{
+                    parts: [
+                        'i18n>detailViewPageTitle',
+                        'LibraryODataV2Model>Title'
+                    ],
+                    formatter: 'formatMessage'
+                }"
+                number="{LibraryODataV2Model>Price}"
+                numberUnit="{i18n>bookPriceColumnTitle}"
+                responsive="true"
+                backgroundDesign="Translucent">
+
+                <attributes>
+                    <ObjectAttribute title="{i18n>bookIdColumnTitle}"
+                        text="{LibraryODataV2Model>ID}" />
+                    <ObjectAttribute title="{i18n>bookPublishDateColumnTitle}"
+                        text="{
+                            path: 'LibraryODataV2Model>PublishDate',          
+                            type: 'sap.ui.model.type.Date',
+                            formatOptions: { style: 'long'}
+                        }" />
+                    <ObjectAttribute
+                        title="{i18n>bookPageCountColumnTitle}"
+                        text="{LibraryODataV2Model>PageCount}" />
+                </attributes>
+                <statuses>
+                    <ObjectStatus title="{i18n>bookRatingColumnTitle}"
+                        text="{LibraryODataV2Model>Rating}"
+                        state="None" />
+                    <ObjectStatus title="{i18n>bookAvailableColumnTitle}"
+                        text="{= ${LibraryODataV2Model>Available} ? ${i18n>bookAvailableYes} : ${i18n>bookAvailableNo}}"
+                        state="{= ${LibraryODataV2Model>Available} ? 'Success' : 'Error'}" />
+                </statuses>
+            </ObjectHeader>
+
+            <VBox class="sapUiMediumMargin">
+                <Title text="{i18n>bookDescriptionColumnTitle}" level="H4" titleStyle="H4"
+                    class="sapUiSmallMarginBottom" />
+                <Text text="{LibraryODataV2Model>Description}" wrapping="true" />
+            </VBox>
+
+        </content>
+    </Page>
+</mvc:View>

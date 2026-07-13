@@ -1,10 +1,7 @@
 <mvc:View xmlns:controls="sap.fe.macros.controls" controllerName="library.catalog.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core"
-    core:require="{
-			formatMessage: 'sap/base/strings/formatMessage'
-		}">
+    xmlns:core="sap.ui.core">
     <Page id="page" title="{i18n>mainTitle}">
         <Table id="booksTable"
             items="{
@@ -65,7 +62,7 @@
                 </Column>
             </columns>
             <items>
-                <ColumnListItem type="Navigation" press="onBookPress">
+                <ColumnListItem type="Navigation" press=".onNavToDetails">
                     <cells>
                         <Text text="{LibraryODataV2Model>ID}" />
                         <Text text="{LibraryODataV2Model>Title}" />

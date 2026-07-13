@@ -13,9 +13,10 @@ sap.ui.define(
       /** @this {import("sap/ui/core/mvc/Controller").default} */
       onInit() {
         this._libraryModelV2 = this.getOwnerComponent().getModel("LibraryODataV2Model");
+        this._router = this.getOwnerComponent().getRouter();
       },
 
-      onAuthorFilterChange: function (event) {
+      onAuthorFilterChange(event) {
         const comboBox = event.getSource();
         const selectedKey = comboBox.getSelectedKey();
         const binding = this.byId("booksTable").getBinding("items");
@@ -31,6 +32,16 @@ sap.ui.define(
           : [];
 
         binding.filter(filter);
+      },
+
+      onNavToDetails(event) {
+        const id = event.getSource().getBindingContext("LibraryODataV2Model")?.getProperty("ID");
+
+        if (id == null) {
+          return;
+        }
+
+        this._router.navTo("RouteDetail", { BookID: id });
       },
     });
   },

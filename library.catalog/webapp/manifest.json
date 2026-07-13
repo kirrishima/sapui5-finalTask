@@ -106,12 +106,23 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "name": "RouteDetail",
+          "pattern": "detail/{BookID}",
+          "target": [
+            "TargetPageObject"
+          ]
         }
       ],
       "targets": {
         "TargetMain": {
           "id": "Main",
           "name": "Main"
+        },
+        "TargetPageObject": {
+          "id": "Detail",
+          "name": "Detail"
         }
       }
     },
