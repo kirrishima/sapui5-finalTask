@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices m:DataServiceVersion="2.0" m:MaxDataServiceVersion="2.0"
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+        <Schema Namespace="LibraryDemo" xmlns="http://schemas.microsoft.com/ado/2007/05/edm">
+
+            <!-- ================= Book ================= -->
+            <EntityType Name="Book">
+                <Key>
+                    <PropertyRef Name="ID" />
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Title" Type="Edm.String" m:FC_TargetPath="SyndicationTitle"
+                    m:FC_ContentKind="text" m:FC_KeepInContent="false" />
+                <Property Name="Description" Type="Edm.String" m:FC_TargetPath="SyndicationSummary"
+                    m:FC_ContentKind="text" m:FC_KeepInContent="false" />
+                <Property Name="ISBN" Type="Edm.String" Nullable="false" />
+                <Property Name="PublishDate" Type="Edm.DateTime" Nullable="false" />
+                <Property Name="PageCount" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Rating" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Price" Type="Edm.Decimal" Nullable="false" />
+                <Property Name="Available" Type="Edm.Boolean" Nullable="false" />
+                <Property Name="AuthorID" Type="Edm.Int32" Nullable="true" />
+                <Property Name="CategoryID" Type="Edm.Int32" Nullable="true" />
+                <NavigationProperty Name="Author"
+                    Relationship="LibraryDemo.Book_Author_Author_Books"
+                    ToRole="Author_Books" FromRole="Book_Author" />
+                <NavigationProperty Name="Category"
+                    Relationship="LibraryDemo.Book_Category_Category_Books"
+                    ToRole="Category_Books" FromRole="Book_Category" />
+            </EntityType>
+
+            <!-- ================= Author ================= -->
+            <EntityType Name="Author">
+                <Key>
+                    <PropertyRef Name="ID" />
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Name" Type="Edm.String" m:FC_TargetPath="SyndicationTitle"
+                    m:FC_ContentKind="text" m:FC_KeepInContent="true" />
+                <Property Name="Biography" Type="Edm.String" />
+                <Property Name="BirthDate" Type="Edm.DateTime" />
+                <Property Name="Country" Type="Edm.String" />
+                <NavigationProperty Name="Books"
+                    Relationship="LibraryDemo.Book_Author_Author_Books"
+                    ToRole="Book_Author" FromRole="Author_Books" />
+            </EntityType>
+
+            <!-- ================= Category ================= -->
+            <EntityType Name="Category">
+                <Key>
+                    <PropertyRef Name="ID" />
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Name" Type="Edm.String" m:FC_TargetPath="SyndicationTitle"
+                    m:FC_ContentKind="text" m:FC_KeepInContent="true" />
+                <Property Name="Description" Type="Edm.String" />
+                <NavigationProperty Name="Books"
+                    Relationship="LibraryDemo.Book_Category_Category_Books"
+                    ToRole="Book_Category" FromRole="Category_Books" />
+            </EntityType>
+
+            <!-- ================= Associations ================= -->
+            <Association Name="Book_Author_Author_Books">
+                <End Type="LibraryDemo.Author" Role="Author_Books" Multiplicity="0..1" />
+                <End Type="LibraryDemo.Book" Role="Book_Author" Multiplicity="*" />
+            </Association>
+            <Association Name="Book_Category_Category_Books">
+                <End Type="LibraryDemo.Category" Role="Category_Books" Multiplicity="0..1" />
+                <End Type="LibraryDemo.Book" Role="Book_Category" Multiplicity="*" />
+            </Association>
+
+            <!-- ================= Entity Container ================= -->
+            <EntityContainer Name="LibraryService" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Books" EntityType="LibraryDemo.Book" />
+                <EntitySet Name="Authors" EntityType="LibraryDemo.Author" />
+                <EntitySet Name="Categories" EntityType="LibraryDemo.Category" />
+
+                <FunctionImport Name="GetBooksByRating"
+                    ReturnType="Collection(LibraryDemo.Book)" EntitySet="Books"
+                    m:HttpMethod="GET">
+                    <Parameter Name="rating" Type="Edm.Int32" />
+                </FunctionImport>
+
+                <AssociationSet Name="Books_Author_Authors"
+                    Association="LibraryDemo.Book_Author_Author_Books">
+                    <End Role="Book_Author" EntitySet="Books" />
+                    <End Role="Author_Books" EntitySet="Authors" />
+                </AssociationSet>
+                <AssociationSet Name="Books_Category_Categories"
+                    Association="LibraryDemo.Book_Category_Category_Books">
+                    <End Role="Book_Category" EntitySet="Books" />
+                    <End Role="Category_Books" EntitySet="Categories" />
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
