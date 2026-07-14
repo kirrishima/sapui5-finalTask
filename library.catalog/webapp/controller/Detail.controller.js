@@ -1,10 +1,10 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
-  /** @param {typeof import("sap/ui/core/mvc/Controller").default} Controller */
-  (Controller, JSONModel) => {
+  ["./BaseController", "sap/ui/model/json/JSONModel"],
+  /** @param {typeof import("sap/ui/core/mvc/Controller").default} BaseControllerr */
+  (BaseControllerr, JSONModel) => {
     "use strict";
 
-    return Controller.extend("library.catalog.controller.Detail", {
+    return BaseControllerr.extend("library.catalog.controller.Detail", {
       onInit() {
         /** @type {import("sap/ui/model/odata/v2/ODataModel").default} */
         this._libraryModelV2 =
