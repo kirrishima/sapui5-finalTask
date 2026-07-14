@@ -1,7 +1,7 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller"],
+  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
   /** @param {typeof import("sap/ui/core/mvc/Controller").default} Controller */
-  (Controller) => {
+  (Controller, JSONModel) => {
     "use strict";
 
     return Controller.extend("library.catalog.controller.Detail", {
@@ -16,6 +16,8 @@ sap.ui.define(
           .getRouter()
           .getRoute("RouteDetail")
           .attachMatched(this._onRouteMatched, this);
+
+        this.getView().setModel(new JSONModel({ editable: false }), "viewModel");
       },
 
       _onRouteMatched(event) {

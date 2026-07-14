@@ -1,4 +1,4 @@
-<mvc:View xmlns:layout="sap.ui.layout"
+<mvc:View xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout"
     controllerName="library.catalog.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
@@ -49,6 +49,26 @@
                 <Title text="{i18n>bookDescriptionColumnTitle}" level="H4" titleStyle="H4"
                     class="sapUiSmallMarginBottom" />
                 <Text text="{LibraryODataV2Model>Description}" wrapping="true" />
+
+                <VBox class="sapUiMediumMarginTop">
+                    <Title text="{i18n>bookDetailLinkedEntitiesTitle}" level="H4" titleStyle="H4" />
+                    <HBox width="100%">
+                        <VBox width="100%" class="sapUiSmallMarginEnd">
+                            <layoutData>
+                                <FlexItemData growFactor="1" baseSize="0%" />
+                            </layoutData>
+                            <core:Fragment fragmentName="library.catalog.view.AuthorForm" type="XML" />
+                        </VBox>
+
+                        <VBox width="100%">
+                            <layoutData>
+                                <FlexItemData growFactor="1" baseSize="0%" />
+                            </layoutData>
+                            <core:Fragment fragmentName="library.catalog.view.CategoryForm"
+                                type="XML" />
+                        </VBox>
+                    </HBox>
+                </VBox>
             </VBox>
 
         </content>
