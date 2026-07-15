@@ -28,6 +28,8 @@
                             <core:Item key="{LibraryODataV2Model>ID}"
                                 text="{LibraryODataV2Model>Name}" />
                         </ComboBox>
+                        <ToolbarSpacer ></ToolbarSpacer>
+                        <Button text="{i18n>odataV2BookDialogTitleCreate}" type="Accept" press=".onCreateNewBook"></Button>
                     </content>
                 </Toolbar>
             </headerToolbar>

@@ -43,6 +43,10 @@ sap.ui.define(
 
         this._router.navTo("RouteDetail", { BookID: id });
       },
+
+      onCreateNewBook() {
+        this._router.navTo("RouteDetail", { BookID: "new" });
+      },
     });
   },
 );

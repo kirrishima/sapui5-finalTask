@@ -75,15 +75,8 @@
         <footer>
             <Bar>
                 <contentRight>
-                    <Button text="{i18n>editButtonText}" type="Emphasized" press="onEdit"
-                        visible="{= !${viewModel>/editable} }" />
-                    <Button text="{i18n>deleteButtonText}" type="Reject" press="onDelete"
-                        visible="{= !${viewModel>/editable} }" />
-
-                    <Button text="{i18n>saveButtonText}" type="Emphasized" press="onSave"
-                        visible="{viewModel>/editable}" />
-                    <Button text="{i18n>cancelButtonText}" press="onCancel"
-                        visible="{viewModel>/editable}" />
+                    <Button text="{i18n>editButtonText}" type="Emphasized" press="onEditBook" />
+                    <Button text="{i18n>deleteButtonText}" type="Reject" press="onDelete" />
                 </contentRight>
             </Bar>
         </footer>

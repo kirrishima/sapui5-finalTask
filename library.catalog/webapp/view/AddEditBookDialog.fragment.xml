@@ -1,0 +1,129 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+    <Dialog id="odataV2BookDialog" type="Message" contentWidth="32rem"
+        class="sapUiSizeCompact"
+        binding="{viewModel>/bookForm}"
+        title="{= ${viewModel>mode} === 'edit'
+            ? ${i18n>odataV2BookDialogTitleEdit}
+            : ${i18n>odataV2BookDialogTitleCreate} }">
+        <content>
+            <l:Grid defaultSpan="L6 M6 S12" hSpacing="1" vSpacing="0.5" class="sapUiSmallMargin">
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelId}" labelFor="odatav2IdInput"
+                        required="{viewModel>fields/ID/required}" />
+                    <Input id="odatav2IdInput" fieldGroupIds="odatav2BookForm"
+                        enabled="{= ${viewModel>mode} === 'create'}"
+                        required="{viewModel>fields/ID/required}" name="ID"
+                        valueState="{viewModel>fields/ID/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputIdError}"
+                        value="{viewModel>fields/ID/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelTitle}" labelFor="odatav2TitleInput"
+                        required="{viewModel>fields/Title/required}" />
+                    <Input id="odatav2TitleInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/Title/required}"
+                        name="Title"
+                        valueState="{viewModel>fields/Title/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputTitleError}"
+                        value="{viewModel>fields/Title/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelDescription}"
+                        labelFor="odatav2DescriptionInput"
+                        required="{viewModel>fields/Description/required}" />
+                    <Input id="odatav2DescriptionInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/Description/required}"
+                        name="Description"
+                        valueState="{viewModel>fields/Description/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputDescriptionError}"
+                        value="{viewModel>fields/Description/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelPublishDate}"
+                        labelFor="odatav2PublishDateInput"
+                        required="{viewModel>fields/PublishDate/required}" />
+                    <DatePicker id="odatav2PublishDateInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/PublishDate/required}" name="PublishDate"
+                        valueState="{viewModel>fields/PublishDate/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputPublishDateError}"
+                        value="{viewModel>fields/PublishDate/value}"
+                        dateValue="{viewModel>fields/PublishDate/dateValue}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelPageCount}"
+                        labelFor="odatav2PageCountInput"
+                        required="{viewModel>fields/PageCount/required}" />
+                    <Input id="odatav2PageCountInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/PageCount/required}" name="PageCount"
+                        valueState="{viewModel>fields/PageCount/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputPageCountError}"
+                        value="{viewModel>fields/PageCount/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelRating}"
+                        labelFor="odatav2RatingInput"
+                        required="{viewModel>fields/Rating/required}" />
+                    <Input id="odatav2RatingInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/Rating/required}" name="Rating"
+                        valueState="{viewModel>fields/Rating/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputRatingRangeError}"
+                        value="{viewModel>fields/Rating/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelPrice}" labelFor="odatav2PriceInput"
+                        required="{viewModel>fields/Price/required}" />
+                    <Input id="odatav2PriceInput" fieldGroupIds="odatav2BookForm"
+                        required="{viewModel>fields/Price/required}"
+                        name="Price"
+                        valueState="{viewModel>fields/Price/valueState}"
+                        valueStateText="{i18n>odataV2BookDialogInputPriceRangeError}"
+                        value="{viewModel>fields/Price/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelAvailable}"
+                        labelFor="odatav2AvailableSwitch" />
+                    <Switch id="odatav2AvailableSwitch"
+                        state="{viewModel>fields/Available/value}" />
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelAuthor}"
+                        labelFor="odatav2AuthorComboBox" />
+                    <ComboBox id="odatav2AuthorComboBox" fieldGroupIds="odatav2BookForm"
+                        items="{path: 'LibraryODataV2Model>/Authors'}"
+                        selectedKey="{viewModel>fields/AuthorID/value}">
+                        <core:Item key="{LibraryODataV2Model>ID}" text="{LibraryODataV2Model>Name}" />
+                    </ComboBox>
+                </VBox>
+
+                <VBox class="sapUiTinyMarginBottom">
+                    <Label text="{i18n>odataV2BookDialogLabelCategory}"
+                        labelFor="odatav2CategoryComboBox" />
+                    <ComboBox id="odatav2CategoryComboBox" fieldGroupIds="odatav2BookForm"
+                        items="{path: 'LibraryODataV2Model>/Categories'}"
+                        selectedKey="{viewModel>fields/CategoryID/value}">
+                        <core:Item key="{LibraryODataV2Model>ID}" text="{LibraryODataV2Model>Name}" />
+                    </ComboBox>
+                </VBox>
+
+            </l:Grid>
+        </content>
+        <beginButton>
+            <Button type="Emphasized"
+                text="{= ${viewModel>mode} === 'edit' ? ${i18n>odataV2BookDialogButtonSave} : ${i18n>odataV2BookDialogButtonCreate} }"
+                press=".onConfirmBook" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>odataV2BookDialogButtonCancel}"
+                press=".onCancelBookDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
