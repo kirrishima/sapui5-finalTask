@@ -76,6 +76,7 @@
         "dataSource": "LibraryODataV2Service",
         "preload": true,
         "settings": {
+          "refreshAfterChange": true,
           "defaultBindingMode": "TwoWay"
         }
       }

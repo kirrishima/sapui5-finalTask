@@ -33,10 +33,21 @@ sap.ui.define(
           return;
         }
 
+        if (this._pendingCreateContext) {
+          this._libraryModelV2.deleteCreatedEntry(this._pendingCreateContext);
+          this._pendingCreateContext = null;
+        }
+
+        this._isNewBook = id === "new";
+
         if (id === "new") {
-          this._isNewBook = true;
-          const oContext = this._libraryModelV2.createEntry("/Books");
-          this.getView().setBindingContext(oContext, "LibraryODataV2Model");
+          this.getView().unbindElement("LibraryODataV2Model");
+
+          const context = this._libraryModelV2.createEntry("/Books", { properties: { ID: null } });
+          this._pendingCreateContext = context;
+
+          this.getView().setBindingContext(context, "LibraryODataV2Model");
+          this._viewModel.setProperty("/bookForm", null);
           return;
         }
 
@@ -55,6 +66,7 @@ sap.ui.define(
 
               if (error || !data) {
                 this._router.navTo("RouteMain", {}, true);
+                MessageToast.show(this._resourceBundle.getText("bookNotFoundMessage"), { duration: 3000 });
               }
             },
           },
@@ -107,6 +119,8 @@ sap.ui.define(
           return;
         }
 
+        this._currentContext = context;
+
         const bookForm = this._getEmptyBookForm(this._isNewBook ? "create" : "edit", context.getObject());
         bookForm.bookPath = context.getPath();
 
@@ -132,7 +146,9 @@ sap.ui.define(
 
           let isValid = !(control.required && !value && !control.dateValue);
 
-          if (key === "Rating") {
+          if (key === "ID" && data.mode === "create") {
+            isValid = isValid && !isNaN(num) && Number.isInteger(num) && num > 0;
+          } else if (key === "Rating") {
             isValid = isValid && !isNaN(num) && num >= 0 && num <= 5;
           } else if (key === "Price") {
             isValid = isValid && !isNaN(num) && num >= 0;
@@ -176,56 +192,55 @@ sap.ui.define(
       },
 
       onCancelBookDialog() {
+        if (this._isNewBook && this._pendingCreateContext) {
+          this._libraryModelV2.deleteCreatedEntry(this._pendingCreateContext);
+          this._pendingCreateContext = null;
+        }
         this._viewModel.setProperty("/bookForm", null);
         this._addEditODataV2BookDialog.close();
       },
 
-      onConfirmBook() {
+      async onConfirmBook() {
         if (!this._validateAddEditBookDialog()) {
           return;
         }
 
         const data = this._viewModel.getProperty("/bookForm");
 
-        const payload = {
-          Title: data.fields.Title.value,
-          Description: data.fields.Description.value,
-          PublishDate: data.fields.PublishDate.dateValue,
-          PageCount: parseInt(data.fields.PageCount.value, 10),
-          Rating: parseInt(data.fields.Rating.value, 10),
-          Price: parseFloat(data.fields.Price.value),
-          Available: !!data.fields.Available.value,
-          AuthorID: data.fields.AuthorID.value ? parseInt(data.fields.AuthorID.value, 10) : null,
-          CategoryID: data.fields.CategoryID.value ? parseInt(data.fields.CategoryID.value, 10) : null,
-        };
+        const setProp = (name, value) =>
+          this._libraryModelV2.setProperty(`${data.bookPath}/${name}`, value, this._currentContext);
 
-        const successHandler = () => {
+        if (data.mode === "create") {
+          setProp("ID", parseInt(data.fields.ID.value, 10));
+        }
+
+        setProp("Title", data.fields.Title.value);
+        setProp("Description", data.fields.Description.value);
+        setProp("PublishDate", data.fields.PublishDate.dateValue);
+        setProp("PageCount", parseInt(data.fields.PageCount.value, 10));
+        setProp("Rating", parseInt(data.fields.Rating.value, 10));
+        setProp("Price", parseFloat(data.fields.Price.value));
+        setProp("Available", !!data.fields.Available.value);
+        setProp("AuthorID", data.fields.AuthorID.value ? parseInt(data.fields.AuthorID.value, 10) : null);
+        setProp("CategoryID", data.fields.CategoryID.value ? parseInt(data.fields.CategoryID.value, 10) : null);
+
+        try {
+          await this.applySubmitChanges();
           MessageToast.show(
             this._resourceBundle.getText(data.mode === "create" ? "createSuccessMessage" : "saveSuccessMessage"),
           );
-          this._addEditODataV2BookDialog.close();
-        };
 
-        const errorHandler = () => {
+          if (data.mode === "create") {
+            this._pendingCreateContext = null;
+            this._router.navTo("RouteDetail", { BookID: data.fields.ID.value }, true);
+          }
+
+          this._addEditODataV2BookDialog.close();
+        } catch (error) {
+          console.error("Error while saving book:", error);
           MessageBox.error(
             this._resourceBundle.getText(data.mode === "create" ? "createErrorMessage" : "saveErrorMessage"),
           );
-        };
-
-        if (data.mode === "create") {
-          payload.ID = parseInt(data.fields.ID.value, 10);
-
-          this._libraryModelV2.create("/Books", payload, {
-            success: successHandler,
-            error: errorHandler,
-          });
-        }
-
-        if (data.mode === "edit") {
-          this._libraryModelV2.update(data.bookPath, payload, {
-            success: successHandler,
-            error: errorHandler,
-          });
         }
       },
     });
