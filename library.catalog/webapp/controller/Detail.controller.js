@@ -33,6 +33,11 @@ sap.ui.define(
           return;
         }
 
+        const appViewModel = this.getView().getModel("appView");
+        if (appViewModel.getProperty("/layout") !== "MidColumnFullScreen") {
+          appViewModel.setProperty("/layout", "TwoColumnsMidExpanded");
+        }
+
         if (this._pendingCreateContext) {
           this._libraryModelV2.deleteCreatedEntry(this._pendingCreateContext);
           this._pendingCreateContext = null;
@@ -169,7 +174,7 @@ sap.ui.define(
         return valid;
       },
 
-      onDelete() {
+      async onDelete() {
         const sPath = this.getView().getBindingContext("LibraryODataV2Model")?.getPath();
 
         if (!sPath || this._isNewBook) {
@@ -177,15 +182,18 @@ sap.ui.define(
         }
 
         MessageBox.confirm(this._resourceBundle.getText("deleteConfirmMessage"), {
-          onClose: (action) => {
-            if (action === MessageBox.Action.YES) {
-              this._libraryModelV2.remove(sPath, {
-                success: () => {
-                  MessageToast.show(this._resourceBundle.getText("deleteSuccessMessage"));
-                  this._router.navTo("RouteMain", {}, true);
-                },
-                error: () => MessageBox.error(this._resourceBundle.getText("deleteErrorMessage")),
-              });
+          onClose: async (action) => {
+            if (action === MessageBox.Action.OK) {
+              this._libraryModelV2.remove(sPath);
+
+              try {
+                await this.applySubmitChanges();
+                MessageToast.show(this._resourceBundle.getText("deleteSuccessMessage"));
+                this._router.navTo("RouteMain", {}, true);
+              } catch (error) {
+                console.log(error);
+                MessageBox.error(this._resourceBundle.getText("deleteErrorMessage"));
+              }
             }
           },
         });
@@ -198,6 +206,25 @@ sap.ui.define(
         }
         this._viewModel.setProperty("/bookForm", null);
         this._addEditODataV2BookDialog.close();
+      },
+
+      onCloseDetailPress() {
+        this.getView().getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
+        this._router.navTo("RouteMain", {}, true);
+      },
+
+      toggleFullScreen() {
+        const appViewModel = this.getView().getModel("appView");
+        const isFullScreen = appViewModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+
+        appViewModel.setProperty("/actionButtonsInfo/midColumn/fullScreen", !isFullScreen);
+
+        if (!isFullScreen) {
+          appViewModel.setProperty("/previousLayout", appViewModel.getProperty("/layout"));
+          appViewModel.setProperty("/layout", "MidColumnFullScreen");
+        } else {
+          appViewModel.setProperty("/layout", appViewModel.getProperty("/previousLayout"));
+        }
       },
 
       async onConfirmBook() {

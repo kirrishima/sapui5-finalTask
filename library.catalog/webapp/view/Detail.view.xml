@@ -1,28 +1,27 @@
-<mvc:View xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout"
+<mvc:View xmlns:layout="sap.ui.layout"
     controllerName="library.catalog.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic"
     core:require="{
 			formatMessage: 'sap/base/strings/formatMessage'
 		}"
 >
-    <Page showHeader="false">
-        <content>
-            <ObjectHeader
-                title="{
-                    parts: [
-                        'i18n>detailViewPageTitle',
-                        'LibraryODataV2Model>Title'
-                    ],
-                    formatter: 'formatMessage'
-                }"
-                number="{LibraryODataV2Model>Price}"
-                numberUnit="{i18n>bookPriceColumnTitle}"
-                responsive="true"
-                backgroundDesign="Translucent">
-
-                <attributes>
+    <semantic:SemanticPage id="page" showFooter="true">
+        <semantic:titleHeading>
+            <Title
+                text="{
+                parts: [
+                    'i18n>detailViewPageTitle',
+                    'LibraryODataV2Model>Title'
+                ],
+                formatter: 'formatMessage'
+            }" />
+        </semantic:titleHeading>
+        <semantic:headerContent>
+            <layout:HorizontalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
                     <ObjectAttribute title="{i18n>bookIdColumnTitle}"
                         text="{LibraryODataV2Model>ID}" />
                     <ObjectAttribute title="{i18n>bookPublishDateColumnTitle}"
@@ -34,17 +33,22 @@
                     <ObjectAttribute
                         title="{i18n>bookPageCountColumnTitle}"
                         text="{LibraryODataV2Model>PageCount}" />
-                </attributes>
-                <statuses>
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
                     <ObjectStatus title="{i18n>bookRatingColumnTitle}"
                         text="{LibraryODataV2Model>Rating}"
                         state="None" />
                     <ObjectStatus title="{i18n>bookAvailableColumnTitle}"
                         text="{= ${LibraryODataV2Model>Available} ? ${i18n>bookAvailableYes} : ${i18n>bookAvailableNo}}"
                         state="{= ${LibraryODataV2Model>Available} ? 'Success' : 'Error'}" />
-                </statuses>
-            </ObjectHeader>
-
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <Label text="{i18n>bookPriceColumnTitle}" />
+                    <ObjectNumber number="{LibraryODataV2Model>Price}" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </semantic:headerContent>
+        <semantic:content>
             <VBox class="sapUiMediumMargin">
                 <Title text="{i18n>bookDescriptionColumnTitle}" level="H4" titleStyle="H4"
                     class="sapUiSmallMarginBottom" />
@@ -70,15 +74,27 @@
                     </HBox>
                 </VBox>
             </VBox>
-
-        </content>
-        <footer>
-            <Bar>
-                <contentRight>
-                    <Button text="{i18n>editButtonText}" type="Emphasized" press="onEditBook" />
-                    <Button text="{i18n>deleteButtonText}" type="Reject" press="onDelete" />
-                </contentRight>
-            </Bar>
-        </footer>
-    </Page>
+        </semantic:content>
+        <semantic:footerCustomActions>
+            <Button text="{i18n>editButtonText}" type="Emphasized" press="onEditBook" />
+            <Button text="{i18n>deleteButtonText}" type="Reject" press="onDelete" />
+        </semantic:footerCustomActions>
+        <semantic:closeAction>
+            <semantic:CloseAction
+                id="closeColumn"
+                press=".onCloseDetailPress" />
+        </semantic:closeAction>
+        <semantic:fullScreenAction>
+            <semantic:FullScreenAction
+                id="enterFullScreen"
+                visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+                press=".toggleFullScreen" />
+        </semantic:fullScreenAction>
+        <semantic:exitFullScreenAction>
+            <semantic:ExitFullScreenAction
+                id="exitFullScreen"
+                visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+                press=".toggleFullScreen" />
+        </semantic:exitFullScreenAction>
+    </semantic:SemanticPage>
 </mvc:View>

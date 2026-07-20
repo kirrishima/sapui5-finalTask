@@ -15,22 +15,34 @@
         title="{i18n>authorFormTitle}">
 
         <Label text="{i18n>authorFormNameLabel}" />
-        <Input value="{LibraryODataV2Model>Author/Name}" editable="{viewModel>/editable}" />
+        <Input value="{LibraryODataV2Model>Author/Name}" visible="{viewModel>/editable}" />
+        <Text text="{LibraryODataV2Model>Author/Name}" visible="{= !${viewModel>/editable}}" />
 
         <Label text="{i18n>authorFormBiographyLabel}" />
         <TextArea value="{LibraryODataV2Model>Author/Biography}" rows="4" width="100%"
-            editable="{viewModel>/editable}" />
+            visible="{viewModel>/editable}" />
+        <Text text="{LibraryODataV2Model>Author/Biography}" width="100%"
+            visible="{= !${viewModel>/editable}}" />
 
         <Label text="{i18n>authorFormBirthDateLabel}" />
-        <DatePicker value="{
+        <DatePicker
+            value="{
                 path: 'LibraryODataV2Model>Author/BirthDate',
                 type: 'sap.ui.model.type.Date',
                 formatOptions: { style: 'medium' }
             }"
-            editable="{viewModel>/editable}" />
+            visible="{viewModel>/editable}" />
+        <Text
+            text="{
+                path: 'LibraryODataV2Model>Author/BirthDate',
+                type: 'sap.ui.model.type.Date',
+                formatOptions: { style: 'medium' }
+            }"
+            visible="{= !${viewModel>/editable}}" />
 
         <Label text="{i18n>authorFormCountryLabel}" />
-        <Input value="{LibraryODataV2Model>Author/Country}" editable="{viewModel>/editable}" />
+        <Input value="{LibraryODataV2Model>Author/Country}" visible="{viewModel>/editable}" />
+        <Text text="{LibraryODataV2Model>Author/Country}" visible="{= !${viewModel>/editable}}" />
 
     </form:SimpleForm>
 </core:FragmentDefinition>

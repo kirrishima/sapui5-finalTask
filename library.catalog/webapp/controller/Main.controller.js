@@ -14,6 +14,11 @@ sap.ui.define(
       onInit() {
         this._libraryModelV2 = this.getOwnerComponent().getModel("LibraryODataV2Model");
         this._router = this.getOwnerComponent().getRouter();
+        this._router.getRoute("RouteMain").attachMatched(this._onRouteMatched, this);
+      },
+
+      _onRouteMatched() {
+        this.getView().getModel("appView").setProperty("/layout", "OneColumn");
       },
 
       onAuthorFilterChange(event) {

@@ -1,9 +1,11 @@
 <mvc:View controllerName="library.catalog.controller.App"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Shell>
-        <App id="app">
-        </App>
-    </Shell>
+    xmlns="sap.m"
+    xmlns:f="sap.f">
+    <App>
+        <f:FlexibleColumnLayout id="layout"
+            layout="{appView>/layout}"
+            stateChange=".onStateChange" />
+    </App>
 </mvc:View>
