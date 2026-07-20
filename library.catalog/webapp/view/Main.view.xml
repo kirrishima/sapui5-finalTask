@@ -1,6 +1,95 @@
-<mvc:View controllerName="library.catalog.controller.Main"
+<mvc:View xmlns:controls="sap.fe.macros.controls" controllerName="library.catalog.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>mainTitle}">
+        <Table id="booksTable"
+            items="{
+                path: 'LibraryODataV2Model>/Books', 
+                sorter: { path: 'ID' },
+                parameters: {
+                    expand: 'Author,Category',
+                    select: 'ID,Title,Description,PublishDate,PageCount,Rating,Price,Available,Author/Name,Category/Name'
+                }
+            }">
+            <headerToolbar>
+                <Toolbar>
+                    <content>
+                        <ComboBox
+                            id="authorFilterComboBox"
+                            placeholder="{i18n>filterByAuthorPlaceholder}"
+                            showClearIcon="true"
+                            items="{
+                                path: 'LibraryODataV2Model>/Authors',
+                                sorter: { path: 'Name' },
+                                parameters: {select: 'ID,Name'}
+                            }"
+                            selectionChange="onAuthorFilterChange">
+                            <core:Item key="{LibraryODataV2Model>ID}"
+                                text="{LibraryODataV2Model>Name}" />
+                        </ComboBox>
+                        <ToolbarSpacer ></ToolbarSpacer>
+                        <Button text="{i18n>odataV2BookDialogTitleCreate}" type="Accept" press=".onCreateNewBook"></Button>
+                    </content>
+                </Toolbar>
+            </headerToolbar>
+            <columns>
+                <Column>
+                    <Text text="{i18n>bookIdColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookTitleColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookDescriptionColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookPublishDateColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookPageCountColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookRatingColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookPriceColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookAvailableColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookAuthorColumnTitle}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>bookCategoryColumnTitle}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation" press=".onNavToDetails">
+                    <cells>
+                        <Text text="{LibraryODataV2Model>ID}" />
+                        <Text text="{LibraryODataV2Model>Title}" />
+                        <Text text="{LibraryODataV2Model>Description}" />
+                        <Text
+                            text="{
+                                path: 'LibraryODataV2Model>PublishDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { style: 'medium' }
+                            }" />
+                        <Text text="{LibraryODataV2Model>PageCount}" />
+                        <Text text="{LibraryODataV2Model>Rating}" />
+                        <Text
+                            text="{
+                                path: 'LibraryODataV2Model>Price'
+                            }" />
+                        <Text
+                            text="{= ${LibraryODataV2Model>Available} ? ${i18n>bookAvailableYes} : ${i18n>bookAvailableNo}}" />
+                        <Text text="{LibraryODataV2Model>Author/Name}" />
+                        <Text text="{LibraryODataV2Model>Category/Name}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
     </Page>
 </mvc:View>

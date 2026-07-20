@@ -1,0 +1,25 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <form:SimpleForm
+        editable="{viewModel>/editable}"
+        layout="ResponsiveGridLayout"
+        labelSpanL="4"
+        labelSpanM="4"
+        emptySpanL="0"
+        emptySpanM="0"
+        columnsL="1"
+        columnsM="1"
+        title="{i18n>categoryFormTitle}">
+
+        <Label text="{i18n>categoryFormNameLabel}" />
+        <Input value="{LibraryODataV2Model>Category/Name}" editable="{viewModel>/editable}" />
+
+        <Label text="{i18n>categoryFormDescriptionLabel}" />
+        <TextArea value="{LibraryODataV2Model>Category/Description}" rows="4" width="100%"
+            editable="{viewModel>/editable}" />
+
+    </form:SimpleForm>
+</core:FragmentDefinition>

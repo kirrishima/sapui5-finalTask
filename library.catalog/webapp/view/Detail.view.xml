@@ -1,0 +1,84 @@
+<mvc:View xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout"
+    controllerName="library.catalog.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    core:require="{
+			formatMessage: 'sap/base/strings/formatMessage'
+		}"
+>
+    <Page showHeader="false">
+        <content>
+            <ObjectHeader
+                title="{
+                    parts: [
+                        'i18n>detailViewPageTitle',
+                        'LibraryODataV2Model>Title'
+                    ],
+                    formatter: 'formatMessage'
+                }"
+                number="{LibraryODataV2Model>Price}"
+                numberUnit="{i18n>bookPriceColumnTitle}"
+                responsive="true"
+                backgroundDesign="Translucent">
+
+                <attributes>
+                    <ObjectAttribute title="{i18n>bookIdColumnTitle}"
+                        text="{LibraryODataV2Model>ID}" />
+                    <ObjectAttribute title="{i18n>bookPublishDateColumnTitle}"
+                        text="{
+                            path: 'LibraryODataV2Model>PublishDate',          
+                            type: 'sap.ui.model.type.Date',
+                            formatOptions: { style: 'long'}
+                        }" />
+                    <ObjectAttribute
+                        title="{i18n>bookPageCountColumnTitle}"
+                        text="{LibraryODataV2Model>PageCount}" />
+                </attributes>
+                <statuses>
+                    <ObjectStatus title="{i18n>bookRatingColumnTitle}"
+                        text="{LibraryODataV2Model>Rating}"
+                        state="None" />
+                    <ObjectStatus title="{i18n>bookAvailableColumnTitle}"
+                        text="{= ${LibraryODataV2Model>Available} ? ${i18n>bookAvailableYes} : ${i18n>bookAvailableNo}}"
+                        state="{= ${LibraryODataV2Model>Available} ? 'Success' : 'Error'}" />
+                </statuses>
+            </ObjectHeader>
+
+            <VBox class="sapUiMediumMargin">
+                <Title text="{i18n>bookDescriptionColumnTitle}" level="H4" titleStyle="H4"
+                    class="sapUiSmallMarginBottom" />
+                <Text text="{LibraryODataV2Model>Description}" wrapping="true" />
+
+                <VBox class="sapUiMediumMarginTop">
+                    <Title text="{i18n>bookDetailLinkedEntitiesTitle}" level="H4" titleStyle="H4" />
+                    <HBox width="100%">
+                        <VBox width="100%" class="sapUiSmallMarginEnd">
+                            <layoutData>
+                                <FlexItemData growFactor="1" baseSize="0%" />
+                            </layoutData>
+                            <core:Fragment fragmentName="library.catalog.view.AuthorForm" type="XML" />
+                        </VBox>
+
+                        <VBox width="100%">
+                            <layoutData>
+                                <FlexItemData growFactor="1" baseSize="0%" />
+                            </layoutData>
+                            <core:Fragment fragmentName="library.catalog.view.CategoryForm"
+                                type="XML" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+        </content>
+        <footer>
+            <Bar>
+                <contentRight>
+                    <Button text="{i18n>editButtonText}" type="Emphasized" press="onEditBook" />
+                    <Button text="{i18n>deleteButtonText}" type="Reject" press="onDelete" />
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>
