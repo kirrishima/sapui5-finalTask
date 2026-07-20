@@ -54,7 +54,8 @@
       "minUI5Version": "1.150.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -90,9 +91,9 @@
     },
     "routing": {
       "config": {
-        "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
+        "routerClass": "sap.f.routing.Router",
+        "controlAggregation": "beginColumnPages",
+        "controlId": "layout",
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
@@ -112,6 +113,7 @@
           "name": "RouteDetail",
           "pattern": "detail/{BookID}",
           "target": [
+            "TargetMain",
             "TargetPageObject"
           ]
         }
@@ -119,11 +121,13 @@
       "targets": {
         "TargetMain": {
           "id": "Main",
-          "name": "Main"
+          "name": "Main",
+          "controlAggregation": "beginColumnPages"
         },
         "TargetPageObject": {
           "id": "Detail",
-          "name": "Detail"
+          "name": "Detail",
+          "controlAggregation": "midColumnPages"
         }
       }
     },

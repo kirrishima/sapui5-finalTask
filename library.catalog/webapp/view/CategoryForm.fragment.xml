@@ -15,11 +15,14 @@
         title="{i18n>categoryFormTitle}">
 
         <Label text="{i18n>categoryFormNameLabel}" />
-        <Input value="{LibraryODataV2Model>Category/Name}" editable="{viewModel>/editable}" />
+        <Input value="{LibraryODataV2Model>Category/Name}" visible="{viewModel>/editable}" />
+        <Text text="{LibraryODataV2Model>Category/Name}" visible="{= !${viewModel>/editable}}" />
 
         <Label text="{i18n>categoryFormDescriptionLabel}" />
         <TextArea value="{LibraryODataV2Model>Category/Description}" rows="4" width="100%"
-            editable="{viewModel>/editable}" />
+            visible="{viewModel>/editable}" />
+        <Text text="{LibraryODataV2Model>Category/Description}" width="100%"
+            visible="{= !${viewModel>/editable}}" />
 
     </form:SimpleForm>
 </core:FragmentDefinition>
